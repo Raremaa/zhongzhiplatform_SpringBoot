@@ -1,10 +1,12 @@
-package com.masaiqi.mapper;
+package com.masaiqi.dao;
 
 import com.masaiqi.entity.ProjectUser;
 import com.masaiqi.entity.ProjectUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProjectUserMapper {
     long countByExample(ProjectUserExample example);
 

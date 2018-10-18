@@ -1,10 +1,12 @@
-package com.masaiqi.mapper;
+package com.masaiqi.dao;
 
 import com.masaiqi.entity.Accessory;
 import com.masaiqi.entity.AccessoryExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AccessoryMapper {
     long countByExample(AccessoryExample example);
 

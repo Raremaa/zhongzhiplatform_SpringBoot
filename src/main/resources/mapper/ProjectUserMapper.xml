@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mapper.AccessoryMapper">
-  <resultMap id="BaseResultMap" type="com.pojo.Accessory">
+<mapper namespace="com.masaiqi.dao.ProjectUserMapper">
+  <resultMap id="BaseResultMap" type="com.masaiqi.entity.ProjectUser">
     <id column="Id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="authority" jdbcType="TINYINT" property="authority" />
-    <result column="uploadId" jdbcType="INTEGER" property="uploadid" />
+    <result column="projectId" jdbcType="INTEGER" property="projectid" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    Id, name, url, authority, uploadId
+    Id, projectId, userId
   </sql>
-  <select id="selectByExample" parameterType="com.pojo.AccessoryExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.masaiqi.entity.ProjectUserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from accessory
+    from project_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,85 +92,67 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from accessory
+    from project_user
     where Id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from accessory
+    delete from project_user
     where Id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.pojo.AccessoryExample">
-    delete from accessory
+  <delete id="deleteByExample" parameterType="com.masaiqi.entity.ProjectUserExample">
+    delete from project_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.pojo.Accessory">
-    insert into accessory (Id, name, url, 
-      authority, uploadId)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{authority,jdbcType=TINYINT}, #{uploadid,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.masaiqi.entity.ProjectUser">
+    insert into project_user (Id, projectId, userId
+      )
+    values (#{id,jdbcType=INTEGER}, #{projectid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.pojo.Accessory">
-    insert into accessory
+  <insert id="insertSelective" parameterType="com.masaiqi.entity.ProjectUser">
+    insert into project_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         Id,
       </if>
-      <if test="name != null">
-        name,
+      <if test="projectid != null">
+        projectId,
       </if>
-      <if test="url != null">
-        url,
-      </if>
-      <if test="authority != null">
-        authority,
-      </if>
-      <if test="uploadid != null">
-        uploadId,
+      <if test="userid != null">
+        userId,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="projectid != null">
+        #{projectid,jdbcType=INTEGER},
       </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="authority != null">
-        #{authority,jdbcType=TINYINT},
-      </if>
-      <if test="uploadid != null">
-        #{uploadid,jdbcType=INTEGER},
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.pojo.AccessoryExample" resultType="java.lang.Long">
-    select count(*) from accessory
+  <select id="countByExample" parameterType="com.masaiqi.entity.ProjectUserExample" resultType="java.lang.Long">
+    select count(*) from project_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update accessory
+    update project_user
     <set>
       <if test="record.id != null">
         Id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.projectid != null">
+        projectId = #{record.projectid,jdbcType=INTEGER},
       </if>
-      <if test="record.url != null">
-        url = #{record.url,jdbcType=VARCHAR},
-      </if>
-      <if test="record.authority != null">
-        authority = #{record.authority,jdbcType=TINYINT},
-      </if>
-      <if test="record.uploadid != null">
-        uploadId = #{record.uploadid,jdbcType=INTEGER},
+      <if test="record.userid != null">
+        userId = #{record.userid,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -180,40 +160,30 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update accessory
+    update project_user
     set Id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      url = #{record.url,jdbcType=VARCHAR},
-      authority = #{record.authority,jdbcType=TINYINT},
-      uploadId = #{record.uploadid,jdbcType=INTEGER}
+      projectId = #{record.projectid,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Accessory">
-    update accessory
+  <update id="updateByPrimaryKeySelective" parameterType="com.masaiqi.entity.ProjectUser">
+    update project_user
     <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="projectid != null">
+        projectId = #{projectid,jdbcType=INTEGER},
       </if>
-      <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="authority != null">
-        authority = #{authority,jdbcType=TINYINT},
-      </if>
-      <if test="uploadid != null">
-        uploadId = #{uploadid,jdbcType=INTEGER},
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
       </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pojo.Accessory">
-    update accessory
-    set name = #{name,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      authority = #{authority,jdbcType=TINYINT},
-      uploadId = #{uploadid,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.masaiqi.entity.ProjectUser">
+    update project_user
+    set projectId = #{projectid,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

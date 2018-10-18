@@ -1,10 +1,12 @@
-package com.masaiqi.mapper;
+package com.masaiqi.dao;
 
 import com.masaiqi.entity.Task;
 import com.masaiqi.entity.TaskExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TaskMapper {
     long countByExample(TaskExample example);
 

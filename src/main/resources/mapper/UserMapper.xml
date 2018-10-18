@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.pojo.User">
+<mapper namespace="com.masaiqi.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.masaiqi.entity.User">
     <id column="Id" jdbcType="INTEGER" property="id" />
     <result column="no" jdbcType="VARCHAR" property="no" />
     <result column="authority" jdbcType="TINYINT" property="authority" />
@@ -72,7 +72,7 @@
   <sql id="Base_Column_List">
     Id, no, authority, name, email, pictureUrl, introduction, teamId
   </sql>
-  <select id="selectByExample" parameterType="com.pojo.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.masaiqi.entity.UserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -104,13 +104,13 @@
     delete from user
     where Id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.pojo.UserExample">
+  <delete id="deleteByExample" parameterType="com.masaiqi.entity.UserExample">
     delete from user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.pojo.User">
+  <insert id="insert" parameterType="com.masaiqi.entity.User">
     insert into user (Id, no, authority, 
       name, email, pictureUrl, 
       introduction, teamId)
@@ -118,7 +118,7 @@
       #{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{pictureurl,jdbcType=VARCHAR}, 
       #{introduction,jdbcType=VARCHAR}, #{teamid,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.pojo.User">
+  <insert id="insertSelective" parameterType="com.masaiqi.entity.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -173,7 +173,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.pojo.UserExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.masaiqi.entity.UserExample" resultType="java.lang.Long">
     select count(*) from user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -225,7 +225,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.masaiqi.entity.User">
     update user
     <set>
       <if test="no != null">
@@ -252,7 +252,7 @@
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pojo.User">
+  <update id="updateByPrimaryKey" parameterType="com.masaiqi.entity.User">
     update user
     set no = #{no,jdbcType=VARCHAR},
       authority = #{authority,jdbcType=TINYINT},

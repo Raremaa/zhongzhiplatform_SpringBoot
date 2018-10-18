@@ -5,8 +5,15 @@ spring:
 
 #公共配置
 mybatis:
+#  起别名。可省略mybatis的xml文件
   type-aliases-package: com.masaiqi.entity
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath*:mapper/*.xml
+#  配置mybatis的sql语句显示在控制台中(将mapper类的日志输出级别为debug)
+logging:
+  level:
+    com:
+      masaiqi:
+        dao: debug
 
 ---
 #开发环境

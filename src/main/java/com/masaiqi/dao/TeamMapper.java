@@ -1,10 +1,12 @@
-package com.masaiqi.mapper;
+package com.masaiqi.dao;
 
 import com.masaiqi.entity.Team;
 import com.masaiqi.entity.TeamExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TeamMapper {
     long countByExample(TeamExample example);
 
