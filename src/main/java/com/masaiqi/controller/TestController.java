@@ -1,6 +1,6 @@
 package com.masaiqi.controller;
 
-import com.masaiqi.entity.User;
+import com.masaiqi.entity.Test;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/testboot")
 public class TestController {
     @RequestMapping("getUser")
-    public User getUser() {
-        User user = new User();
+    public Test getUser() {
+        Test user = new Test();
         user.setName("test");
         return user;
     }

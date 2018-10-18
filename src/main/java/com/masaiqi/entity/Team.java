@@ -5,43 +5,33 @@ import java.io.Serializable;
 /**
  * @author 
  */
-public class User implements Serializable {
+public class Team implements Serializable {
     private Integer id;
 
     /**
-     * 用户编号
+     * 团队编号
      */
     private String no;
 
     /**
-     * 权限:0-管理员；1-团队拥有者；2-团队成员
-     */
-    private Byte authority;
-
-    /**
-     * 用户姓名
+     * 团队名称
      */
     private String name;
 
     /**
-     * 电子邮件
-     */
-    private String email;
-
-    /**
-     * 用户头像url路径
+     * 团队头像url路径
      */
     private String pictureurl;
 
     /**
-     * 用户个人介绍
+     * 团队介绍
      */
     private String introduction;
 
     /**
-     * 所属团队Id
+     * 团队所有者
      */
-    private Integer teamid;
+    private Integer leader;
 
     private static final long serialVersionUID = 1L;
 
@@ -61,28 +51,12 @@ public class User implements Serializable {
         this.no = no;
     }
 
-    public Byte getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(Byte authority) {
-        this.authority = authority;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPictureurl() {
@@ -101,12 +75,12 @@ public class User implements Serializable {
         this.introduction = introduction;
     }
 
-    public Integer getTeamid() {
-        return teamid;
+    public Integer getLeader() {
+        return leader;
     }
 
-    public void setTeamid(Integer teamid) {
-        this.teamid = teamid;
+    public void setLeader(Integer leader) {
+        this.leader = leader;
     }
 
     @Override
@@ -120,15 +94,13 @@ public class User implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        User other = (User) that;
+        Team other = (Team) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getNo() == null ? other.getNo() == null : this.getNo().equals(other.getNo()))
-            && (this.getAuthority() == null ? other.getAuthority() == null : this.getAuthority().equals(other.getAuthority()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
             && (this.getPictureurl() == null ? other.getPictureurl() == null : this.getPictureurl().equals(other.getPictureurl()))
             && (this.getIntroduction() == null ? other.getIntroduction() == null : this.getIntroduction().equals(other.getIntroduction()))
-            && (this.getTeamid() == null ? other.getTeamid() == null : this.getTeamid().equals(other.getTeamid()));
+            && (this.getLeader() == null ? other.getLeader() == null : this.getLeader().equals(other.getLeader()));
     }
 
     @Override
@@ -137,12 +109,10 @@ public class User implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getNo() == null) ? 0 : getNo().hashCode());
-        result = prime * result + ((getAuthority() == null) ? 0 : getAuthority().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
         result = prime * result + ((getPictureurl() == null) ? 0 : getPictureurl().hashCode());
         result = prime * result + ((getIntroduction() == null) ? 0 : getIntroduction().hashCode());
-        result = prime * result + ((getTeamid() == null) ? 0 : getTeamid().hashCode());
+        result = prime * result + ((getLeader() == null) ? 0 : getLeader().hashCode());
         return result;
     }
 
@@ -154,12 +124,10 @@ public class User implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", no=").append(no);
-        sb.append(", authority=").append(authority);
         sb.append(", name=").append(name);
-        sb.append(", email=").append(email);
         sb.append(", pictureurl=").append(pictureurl);
         sb.append(", introduction=").append(introduction);
-        sb.append(", teamid=").append(teamid);
+        sb.append(", leader=").append(leader);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
