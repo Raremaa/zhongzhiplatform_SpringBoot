@@ -1,7 +1,7 @@
 package com.masaiqi.controller;
 
-import com.masaiqi.dao.UserMapper;
 import com.masaiqi.entity.User;
+import com.masaiqi.mapper.UserMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -25,7 +25,7 @@ public class TestController {
     })
     @RequestMapping(value = "getUser",method = RequestMethod.POST)
     public User getUser() {
-        User user = userMapper.selectByPrimaryKey(1);
+        User user = userMapper.selectById(1);
         return user;
     }
 }
