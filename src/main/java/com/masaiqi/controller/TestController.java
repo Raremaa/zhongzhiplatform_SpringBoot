@@ -1,5 +1,8 @@
 package com.masaiqi.controller;
 
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.masaiqi.entity.User;
 import com.masaiqi.mapper.UserMapper;
 import io.swagger.annotations.Api;
@@ -25,7 +28,13 @@ public class TestController {
     })
     @RequestMapping(value = "getUser",method = RequestMethod.POST)
     public User getUser() {
-        User user = userMapper.selectById(1);
+//        jdk1.8新特性 lambda表达式测试
+        LambdaQueryWrapper<User> lam = new QueryWrapper<User>().lambda();
+        lam.eq(User::getName,"uzi");
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(User::getName,"uzi");
+        //普通传值方式测试 condition测试
+        User user = userMapper.selectOne(new QueryWrapper<User>().eq(false,"name","uzi"));
         return user;
     }
 }

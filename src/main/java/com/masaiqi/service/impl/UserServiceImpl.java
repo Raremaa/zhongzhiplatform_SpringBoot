@@ -5,6 +5,7 @@ import com.masaiqi.entity.User;
 import com.masaiqi.mapper.UserMapper;
 import com.masaiqi.service.IUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @since 2018-10-22
  */
 @Service
+@Transactional
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
 }

@@ -5,6 +5,7 @@ import com.masaiqi.entity.Task;
 import com.masaiqi.mapper.TaskMapper;
 import com.masaiqi.service.ITaskService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @since 2018-10-22
  */
 @Service
+@Transactional
 public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements ITaskService {
 
 }
