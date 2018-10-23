@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.masaiqi.entity.User;
 import com.masaiqi.mapper.UserMapper;
+import com.masaiqi.service.IUserService;
+import com.masaiqi.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -21,6 +23,9 @@ public class TestController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    IUserService userService = new UserServiceImpl();
+
     @ApiOperation(value="更新信息", notes="根据url的id来指定更新用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long",paramType = "path"),
@@ -34,7 +39,7 @@ public class TestController {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(User::getName,"uzi");
         //普通传值方式测试 condition测试
-        User user = userMapper.selectOne(new QueryWrapper<User>().eq(false,"name","uzi"));
+        User user = userService.getOne(new QueryWrapper<User>().eq(false,"name","uzi"));
         return user;
     }
 }

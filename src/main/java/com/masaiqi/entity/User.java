@@ -33,6 +33,16 @@ public class User implements Serializable {
     private String no;
 
     /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 手机号
+     */
+    private String phone;
+
+    /**
      * 权限:0-管理员；1-团队拥有者；2-团队成员
      */
     private Integer authority;

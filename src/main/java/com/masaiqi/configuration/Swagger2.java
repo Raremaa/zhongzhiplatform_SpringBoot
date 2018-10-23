@@ -1,4 +1,4 @@
-package com.masaiqi;
+package com.masaiqi.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

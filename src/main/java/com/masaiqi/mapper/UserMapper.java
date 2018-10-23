@@ -2,6 +2,7 @@ package com.masaiqi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.masaiqi.entity.User;
+import com.masaiqi.model.ResModel.ResUser;
 import org.springframework.stereotype.Repository;
 
 /**

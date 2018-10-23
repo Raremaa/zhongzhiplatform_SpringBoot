@@ -29,6 +29,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
 server:
   port: 8090
+my-jedis:
+  host: 127.0.0.1
+  port: 6379
 
 ---
 #生产环境
