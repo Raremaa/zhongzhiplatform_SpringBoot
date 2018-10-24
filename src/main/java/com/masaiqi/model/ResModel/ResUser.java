@@ -1,12 +1,13 @@
 package com.masaiqi.model.ResModel;
 
-import com.masaiqi.entity.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import java.util.List;
 
+/**
+ * 用户信息响应封装
+ */
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -21,11 +22,6 @@ public class ResUser extends BaseResModel {
      * 用户编号
      */
     private String no;
-
-    /**
-     * 密码
-     */
-    private String password;
 
     /**
      * 手机号

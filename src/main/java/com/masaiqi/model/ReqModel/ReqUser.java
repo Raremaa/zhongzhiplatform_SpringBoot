@@ -25,4 +25,10 @@ public class ReqUser extends BaseReqModel {
      */
     private String password;
 
+    /**
+     * token信息
+     */
+    private String token;
+
+
 }
