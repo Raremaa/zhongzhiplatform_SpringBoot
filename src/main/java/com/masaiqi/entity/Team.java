@@ -27,10 +27,6 @@ public class Team implements Serializable {
     @TableId(value = "Id", type = IdType.AUTO)
     private Integer Id;
 
-    /**
-     * 团队编号
-     */
-    private String no;
 
     /**
      * 团队名称

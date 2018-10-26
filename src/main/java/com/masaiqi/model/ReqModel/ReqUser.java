@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 public class ReqUser extends BaseReqModel {
 
     /**
+     * 用户编号
+     */
+    private String no;
+
+    /**
      * 电子邮件
      */
     private String email;
@@ -19,6 +24,11 @@ public class ReqUser extends BaseReqModel {
      * 手机号
      */
     private String phone;
+
+    /**
+     * 用户姓名
+     */
+    private String name;
 
     /**
      * 密码
@@ -30,5 +40,9 @@ public class ReqUser extends BaseReqModel {
      */
     private String token;
 
+    /**
+     * 团队名
+     */
+    private String teamName;
 
 }

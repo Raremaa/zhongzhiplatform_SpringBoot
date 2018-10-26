@@ -2,6 +2,7 @@ package com.masaiqi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.masaiqi.entity.ProjectUser;
+import com.masaiqi.entity.Team;
 import com.masaiqi.entity.User;
 import com.masaiqi.json.JsonResult;
 import com.masaiqi.kit.ConstantKit;
@@ -11,8 +12,10 @@ import com.masaiqi.model.ReqModel.ReqUser;
 import com.masaiqi.model.ResModel.ResLogin;
 import com.masaiqi.model.ResModel.ResUser;
 import com.masaiqi.service.IProjectUserService;
+import com.masaiqi.service.ITeamService;
 import com.masaiqi.service.IUserService;
 import com.masaiqi.service.impl.ProjectUserServiceImpl;
+import com.masaiqi.service.impl.TeamServiceImpl;
 import com.masaiqi.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,9 @@ import java.util.List;
 @RequestMapping("/userAction")
 @Api("用户控制层")
 public class UserController {
+
+    @Autowired
+    ITeamService teamService = new TeamServiceImpl();
 
     @Autowired
     IUserService userService = new UserServiceImpl();
@@ -98,7 +105,40 @@ public class UserController {
         return jsonResult;
     }
 
-
+    /**
+     * 注册
+     * @param reqUser
+     * @return token信息
+     * @throws Exception
+     */
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    public JsonResult register(@RequestBody ReqUser reqUser) throws Exception{
+        if(reqUser == null){
+            return new JsonResult("您还未传入用户信息");
+        }
+        userService.register(reqUser);
+        String exceptionMsg = "";
+        String token = tokenGenerator.generate(reqUser.getName(),reqUser.getPassword());
+        try(Jedis jedis = new Jedis(jedis_host, jedis_port)){
+            jedis.set(reqUser.getName(), token);
+            jedis.expire(reqUser.getName(), ConstantKit.TOKEN_EXPIRE_TIME);
+            jedis.set(token, reqUser.getName());
+            jedis.expire(token, ConstantKit.TOKEN_EXPIRE_TIME);
+            Long currentTime = System.currentTimeMillis();
+            jedis.set(token + reqUser.getName(),currentTime.toString());
+        } catch (Exception e){
+            exceptionMsg = e.toString();
+        }
+        if(!StringKit.isEmptyExcludeTrim(exceptionMsg)){
+            return new JsonResult(exceptionMsg);
+        }
+        ResLogin resLogin = ResLogin.builder()
+                .token(token)
+                .build();
+        JsonResult<ResLogin> jsonResult = new JsonResult<>();
+        jsonResult.setDate(resLogin);
+        return jsonResult;
+    }
 
     /**
      * 获取用户信息
@@ -121,11 +161,14 @@ public class UserController {
                                 .eq(ProjectUser::getUserId,user.getId())
                         );
                         List<Integer> projectIds = new ArrayList<>(0);
-                        projectUsers.forEach(obj -> projectIds.add(obj.getProjectId()));
+                        if (projectUsers != null) {
+                            projectUsers.forEach(obj -> projectIds.add(obj.getProjectId()));
+                        }
+                        Team team = teamService.getOne(new QueryWrapper<Team>().eq("Leader",user.getId()));
                         String access = "";
                         switch (user.getAuthority()){
                             case 0: access = "admin"; break;
-                            case 1: access = "team_member"; break;
+                            case 1: access = "team_leader"; break;
                             case 2: access = "project_leader"; break;
                             default: access = "unknown";break;
                         }
@@ -138,7 +181,7 @@ public class UserController {
                                 .email(user.getEmail())
                                 .pictureUrl(user.getPictureUrl())
                                 .introduction(user.getIntroduction())
-                                .teamId(user.getTeamId())
+                                .teamId(team == null ? null:team.getId())
                                 .access(access)
                                 .projectId(projectIds)
                                 .build();

@@ -2,6 +2,7 @@ package com.masaiqi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.masaiqi.entity.User;
+import com.masaiqi.model.ReqModel.ReqUser;
 
 /**
  * <p>
@@ -12,5 +13,5 @@ import com.masaiqi.entity.User;
  * @since 2018-10-22
  */
 public interface IUserService extends IService<User> {
-
+    public boolean register(ReqUser reqUser);
 }
