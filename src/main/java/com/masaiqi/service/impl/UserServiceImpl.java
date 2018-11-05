@@ -1,16 +1,18 @@
 package com.masaiqi.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.masaiqi.entity.Team;
 import com.masaiqi.entity.User;
 import com.masaiqi.mapper.TeamMapper;
 import com.masaiqi.mapper.UserMapper;
 import com.masaiqi.model.ReqModel.ReqUser;
+import com.masaiqi.model.ResModel.ResUser;
 import com.masaiqi.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <p>
@@ -43,16 +45,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setEmail(reqUser.getEmail());
         user.setAuthority(1);//团队拥有者
         baseMapper.insert(user);
-        User userTemp = baseMapper.selectOne(new QueryWrapper<User>().lambda()
-                .eq(User::getPhone,user.getPhone())
-                .eq(User::getPassword,user.getPassword())
-        );
         //保存至团队表
         Team team = new Team();
-        team.setLeader(userTemp.getId());
+        team.setLeader(user.getId());
         team.setName(reqUser.getTeamName());
         teamMapper.insert(team);
+        //维护用户表teamId
+        user.setTeamId(team.getId());
+        baseMapper.updateById(user);
         return true;
+    }
+
+    /**
+     * 根据teamId查询用户信息
+     * @param teamId team表主键
+     * @return 用户信息
+     */
+    @Override
+    public List<ResUser> getUserByTeamId(Integer teamId) {
+        return baseMapper.getUserByTeamId(teamId);
     }
 
 }

@@ -68,5 +68,9 @@ public class User implements Serializable {
      */
     private String introduction;
 
-
+    /**
+     * 所属团队Id
+     */
+    @TableField("teamId")
+    private Integer teamId;
 }

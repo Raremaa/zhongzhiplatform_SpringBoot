@@ -1,16 +1,18 @@
 package com.masaiqi.model.ResModel;
 
-import com.masaiqi.entity.Project;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
-@NoArgsConstructor
+/**
+ * 用户信息响应封装
+ */
+@Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ResUser {
+public class ResUserBuilder extends BaseResModel {
+
     /**
      * 用户id
      */
@@ -69,32 +71,6 @@ public class ResUser {
     /**
      * 所在项目组名
      */
-    private List<String> projectNames;
+    private List<String> projectName;
 
-    /**
-     * 权限:0-管理员；1-团队拥有者；2-团队成员
-     */
-    private Integer authority;
-
-    /**
-     * 所在项目组名字符串
-     */
-    private String projectName;
-
-    /**
-     * 用户身份字符串
-     */
-    private String authorityName;
-
-    /**
-     * 帮助前台封装用户所在项目组字符串名
-     * @return
-     */
-    public String getProjectName() {
-        StringBuilder sb = new StringBuilder(0);
-        this.projectNames.forEach(obj -> {
-            sb.append(obj+"</br>&emsp;&emsp;&emsp;&emsp;");
-        });
-        return sb.toString();
-    }
 }

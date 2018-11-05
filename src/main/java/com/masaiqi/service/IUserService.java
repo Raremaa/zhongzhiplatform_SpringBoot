@@ -3,6 +3,9 @@ package com.masaiqi.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.masaiqi.entity.User;
 import com.masaiqi.model.ReqModel.ReqUser;
+import com.masaiqi.model.ResModel.ResUser;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +16,6 @@ import com.masaiqi.model.ReqModel.ReqUser;
  * @since 2018-10-22
  */
 public interface IUserService extends IService<User> {
-    public boolean register(ReqUser reqUser);
+    boolean register(ReqUser reqUser);
+    List<ResUser> getUserByTeamId(Integer teamId);
 }

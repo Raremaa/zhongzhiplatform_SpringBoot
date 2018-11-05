@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 public class ReqUser extends BaseReqModel {
 
     /**
+     * 用户表主键
+     */
+    private Integer id;
+
+    /**
      * 用户编号
      */
     private String no;
@@ -45,4 +50,19 @@ public class ReqUser extends BaseReqModel {
      */
     private String teamName;
 
+    /**
+     * 个人介绍
+     */
+    private String introduction;
+
+    /**
+     * 用户权限
+     * 0-管理员；1-团队拥有者；2-团队成员
+     */
+    private Integer authority;
+
+    /**
+     * 团队表主键
+     */
+    private Integer teamId;
 }

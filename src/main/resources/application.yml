@@ -33,10 +33,42 @@ my-jedis:
   host: 127.0.0.1
   port: 6379
 
+#  解决前端iview-admin的跨域代理问题
+vue-url:
+  login: /userAction/login
+  register: /userAction/register
+  getUserInfo: /userAction/getUserInfo
+  #  我的团队(团队拥有者)
+  registerMember: /teamLeader/userAction/registerMember
+  getByTeamId: /teamLeader/userAction/getByTeamId
+  deleteMembers: /userAction/deleteMembers
+  updateMember: /userAction/updateMember
+  #  我的团队(团队成员)
+  #  我的项目(团队拥有者)
+  #  我的项目(团队成员)
+
 ---
 #生产环境
 spring:
   profiles: prod
-
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/zhongzhiplatform?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据连接池
+    type: com.alibaba.druid.pool.DruidDataSource
 server:
-  port: 80
+  port: 8090
+my-jedis:
+  host: 127.0.0.1
+  port: 6379
+
+vue-url:
+  getByTeamId: /userAction/getByTeamId
+  login: /userAction/login
+  register: /userAction/register
+  getUserInfo: /userAction/getUserInfo
+  registerMember: /userAction/registerMember
+  deleteMembers: /userAction/deleteMembers
+  updateMember: /userAction/updateMember
