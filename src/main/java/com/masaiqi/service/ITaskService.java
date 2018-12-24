@@ -2,6 +2,10 @@ package com.masaiqi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.masaiqi.entity.Task;
+import com.masaiqi.model.ReqModel.ReqTask;
+import com.masaiqi.model.ResModel.ResTask;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,6 @@ import com.masaiqi.entity.Task;
  * @since 2018-10-22
  */
 public interface ITaskService extends IService<Task> {
-
+    List<ResTask> getTask(Task task);
+    void addTask (ReqTask reqTask);
 }

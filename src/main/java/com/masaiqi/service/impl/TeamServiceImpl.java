@@ -19,4 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements ITeamService {
 
+    /**
+     * 解散团队
+     * @return
+     */
+    @Override
+    public Integer dismiss(Integer id) {
+        return baseMapper.dismiss(id);
+    }
 }

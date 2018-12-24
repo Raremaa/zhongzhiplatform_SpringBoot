@@ -2,4 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.masaiqi.mapper.TaskMapper">
 
+    <select id="getTask" resultMap="getTaskMap" parameterType="com.masaiqi.entity.Task">
+        SELECT
+	      task.Id AS task_Id,
+          task.userId AS task_userId,
+          task.projectId AS task_projectId,
+          task.NAME AS task_name,
+          task.msg AS task_msg,
+          task.userStatus AS task_userStatus,
+          task.accessoryId AS task_accessoryId,
+          task.personStatus AS task_personStatus,
+          task.STATUS AS task_status,
+          task.accessoryPersonId AS task_accessoryPersonId,
+          accessory.Id AS accessory_Id,
+          accessory.NAME AS accessory_name,
+          accessory.url AS accessory_url,
+          accessory.authority AS accessory_authority,
+          accessory.uploadId AS accessory_uploadId,
+          `user`.name AS user_name
+        FROM
+	      task AS task
+	    LEFT JOIN accessory AS accessory ON accessory.Id = task.accessoryId
+        LEFT JOIN user AS `user` ON `user`.Id = task.userId
+        <where>
+            <if test="Id != null">task.Id = ${Id}</if>
+            <if test="userId != null">AND task.userId = ${userId}</if>
+            <if test="projectId != null">AND task.projectId = ${projectId}</if>
+            <if test="name != null">AND task.name = ${name}</if>
+            <if test="msg != null">AND task.msg = ${msg}</if>
+            <if test="userStatus != null">AND task.userStatus = &apos;${userStatus}&apos;</if>
+            <if test="accessoryId != null">AND task.accessoryId = ${accessoryId}</if>
+            <if test="personStatus != null">AND task.personStatus = ${personStatus}</if>
+            <if test="status != null">AND task.status = '${status}'</if>
+        </where>
+    </select>
+
+    <resultMap id="getTaskMap" type="com.masaiqi.model.ResModel.ResTask">
+        <id column="task_Id" property="Id"/>
+        <result column="task_userId" property="userId"/>
+        <result column="task_projectId" property="projectId"/>
+        <result column="task_name" property="name"/>
+        <result column="task_msg" property="msg"/>
+        <result column="task_userStatus" property="userStatus"/>
+        <result column="task_accessoryId" property="accessoryId"/>
+        <result column="task_accessoryPersonId" property="accessoryPersonId" />
+        <result column="task_personStatus" property="personStatus"/>
+        <result column="task_status" property="status"/>
+        <result column="user_name" property="userName"/>
+        <association property="accessory" javaType="com.masaiqi.entity.Accessory">
+            <result column="accessory_Id" property="Id"/>
+            <result column="accessory_name" property="name"/>
+            <result column="accessory_url" property="url"/>
+            <result column="accessory_authority" property="authority"/>
+            <result column="accessory_uploadId" property="uploadId"/>
+        </association>
+        <!--<collection property="accessory" ofType="com.masaiqi.entity.Accessory" javaType="list">-->
+            <!--<id column="accessory_Id" property="Id"/>-->
+            <!--<result column="accessory_name" property="name"/>-->
+            <!--<result column="accessory_url" property="url"/>-->
+            <!--<result column="accessory_authority" property="authority"/>-->
+            <!--<result column="accessory_uploadId" property="uploadId"/>-->
+        <!--</collection>-->
+    </resultMap>
 </mapper>

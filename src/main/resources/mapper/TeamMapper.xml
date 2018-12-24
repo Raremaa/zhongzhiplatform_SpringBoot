@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.masaiqi.mapper.TeamMapper">
-
+    <delete id="dismiss">
+        DELETE
+          team,
+          `user`,
+          task,
+          project,
+          project_user,
+          accessory
+        FROM
+	      team
+	    LEFT JOIN `user` ON `user`.teamId = team.Id
+	    LEFT JOIN accessory ON accessory.uploadId = user.Id
+	    LEFT JOIN project ON project.teamId = team.Id
+	    LEFT JOIN project_user ON project_user.projectId = project.Id
+	    LEFT JOIN task ON task.userId = `user`.Id
+        WHERE team.Id = #{id}
+    </delete>
 </mapper>

@@ -2,20 +2,21 @@ package com.masaiqi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.masaiqi.entity.ProjectUser;
-import com.masaiqi.entity.Team;
-import com.masaiqi.entity.User;
+import com.masaiqi.entity.*;
 import com.masaiqi.json.JsonResult;
 import com.masaiqi.kit.ConstantKit;
 import com.masaiqi.kit.Md5TokenGenerator;
 import com.masaiqi.kit.StringKit;
 import com.masaiqi.model.ReqModel.ReqUser;
+import com.masaiqi.model.ReqModel.ReqUserProjejct;
 import com.masaiqi.model.ResModel.ResLogin;
 import com.masaiqi.model.ResModel.ResUser;
 import com.masaiqi.model.ResModel.ResUserBuilder;
+import com.masaiqi.service.IProjectService;
 import com.masaiqi.service.IProjectUserService;
 import com.masaiqi.service.ITeamService;
 import com.masaiqi.service.IUserService;
+import com.masaiqi.service.impl.ProjectServiceImpl;
 import com.masaiqi.service.impl.ProjectUserServiceImpl;
 import com.masaiqi.service.impl.TeamServiceImpl;
 import com.masaiqi.service.impl.UserServiceImpl;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +54,9 @@ public class UserController {
 
     @Autowired
     IUserService userService = new UserServiceImpl();
+
+    @Autowired
+    IProjectService projectService = new ProjectServiceImpl();
 
     @Autowired
     IProjectUserService projectUserService = new ProjectUserServiceImpl();
@@ -144,8 +149,8 @@ public class UserController {
 
     /**
      * 获取用户信息
-     * @param reqUser
-     * @return token
+     * @param reqUser token信息
+     * @return 用户信息
      * @throws Exception
      */
     @RequestMapping(value = "${vue-url.getUserInfo}",method = RequestMethod.GET)
@@ -163,10 +168,18 @@ public class UserController {
                                 .eq(ProjectUser::getUserId,user.getId())
                         );
                         List<Integer> projectIds = new ArrayList<>(0);
+                        List<String> projectNames = new ArrayList<>(0);
                         if (projectUsers != null) {
-                            projectUsers.forEach(obj -> projectIds.add(obj.getProjectId()));
+                            projectUsers.forEach(obj ->{
+                                Project project = projectService.getById(obj.getProjectId());
+                                if(project != null){
+                                    projectNames.add(project.getName());
+                                    projectIds.add(project.getId());
+                                }
+                            });
                         }
-                        Team team = teamService.getOne(new QueryWrapper<Team>().eq("Leader",user.getId()));
+//                        Team team = teamService.getOne(new QueryWrapper<Team>().eq("Leader",user.getId()));
+                        Integer teamId = user.getTeamId();
                         String access = "";
                         switch (user.getAuthority()){
                             case 0: access = "admin"; break;
@@ -183,9 +196,10 @@ public class UserController {
                                 .email(user.getEmail())
                                 .pictureUrl(user.getPictureUrl())
                                 .introduction(user.getIntroduction())
-                                .teamId(team == null ? null:team.getId())
+                                .teamId(teamId)
                                 .access(access)
                                 .projectId(projectIds)
+                                .projectName(projectNames)
                                 .build();
                         jsonResult.setDate(resUserBuilder);
                     }else {
@@ -245,6 +259,7 @@ public class UserController {
         user.setEmail(reqUser.getEmail());
         user.setIntroduction(reqUser.getIntroduction());
         user.setTeamId(reqUser.getTeamId());
+        user.setPassword("666666");
         userService.save(user);
         return new JsonResult(true,"成功！",null);
     }
@@ -297,5 +312,162 @@ public class UserController {
         }
         userService.updateById(user);
         return new JsonResult(true,"成功",null);
+    }
+
+    /**
+     * 处理前端错误信息
+     * 暂不作处理
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "${vue-url.save_error_logger}",method = RequestMethod.POST)
+    public JsonResult save_error_logger()throws Exception{
+        return null;
+    }
+
+    /**
+     * 获取任务信息
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "${vue-url.getUserByTask}",method = RequestMethod.POST)
+    public JsonResult getUserByTask(@RequestBody Map map)throws Exception{
+        if(map == null || 0 == map.size()){
+            return new JsonResult<ResUser>("信息为空！");
+        }
+        List<ProjectUser> projectUsers = (List<ProjectUser>) projectUserService.list(new QueryWrapper<ProjectUser>().eq("projectId",map.get("projectId")));
+        List<User> users = new ArrayList<>(0);
+        projectUsers.forEach(obj ->{
+            users.add(userService.getById(obj.getUserId()));
+        });
+        return new JsonResult(users);
+    }
+
+    /**
+     * 根据团队编号和项目编号获取用户信息
+     */
+    @RequestMapping(value = "${vue-url.getUserByTeamId}",method = RequestMethod.POST)
+    public JsonResult getUserByTeamId(@RequestBody Team team)throws Exception{
+        if(team == null){
+            return new JsonResult<ResUser>("信息为空！");
+        }
+        List<User> users = userService.list(new QueryWrapper<User>().eq("teamId",team.getId()).eq("authority",3));
+        return new JsonResult(users);
+    }
+
+    /**
+     * 根据团队编号和项目编号获取用户信息
+     */
+    @RequestMapping(value = "${vue-url.getUserByTP}",method = RequestMethod.POST)
+    public JsonResult getUserByTP(@RequestBody ReqUserProjejct reqUserProjejct)throws Exception{
+        if(reqUserProjejct == null){
+            return new JsonResult<ResUser>("信息为空！");
+        }
+        List<User> users = projectUserService.getUserByTP(reqUserProjejct);
+        return new JsonResult(users);
+    }
+
+    /**
+     * 根据团队编号获取用户信息
+     */
+    @RequestMapping(value = "${vue-url.getUserByProject}",method = RequestMethod.POST)
+    public JsonResult getUserByProject(@RequestBody Map map)throws Exception{
+        if(map == null){
+            return new JsonResult("信息为空！");
+        }
+        List<ProjectUser> projectUsers = projectUserService.list(new QueryWrapper<ProjectUser>().lambda()
+                .eq(ProjectUser::getProjectId,map.get("id"))
+        );
+        List<User> users = new ArrayList<>(0);
+        projectUsers.forEach(obj ->{
+            User user = userService.getById(obj.getUserId());
+            users.add(user);
+        });
+        return new JsonResult(users);
+    }
+
+    /**
+     * 根据项目编号删除项目组用户
+     */
+    @RequestMapping(value = "${vue-url.deleteUserForProject}",method = RequestMethod.POST)
+    public JsonResult deleteUserForProject(@RequestBody ProjectUser projectUser)throws Exception{
+        if(projectUser == null){
+            return new JsonResult<ResUser>("信息为空！");
+        }
+        projectUserService.remove(new QueryWrapper<ProjectUser>().lambda()
+                .eq(ProjectUser::getUserId,projectUser.getUserId())
+                .eq(ProjectUser::getProjectId,projectUser.getProjectId())
+        );
+        return new JsonResult(true,null,null);
+    }
+
+    /**
+     *
+     */
+    @RequestMapping(value = "${vue-url.getUserByProjectPlus}",method = RequestMethod.POST)
+    public JsonResult getUserByProjectPlus(@RequestBody Project project)throws Exception{
+        if(project == null){
+            return new JsonResult<ResUser>("信息为空！");
+        }
+        List<ProjectUser> projectUsers = projectUserService.list(new QueryWrapper<ProjectUser>().eq("projectId",project.getId()));
+        List<User> users = new ArrayList<>(0);
+        projectUsers.forEach(obj ->{
+            User user = userService.getById(obj.getUserId());
+            if(user.getAuthority() != 1 && user.getAuthority() !=2){
+                users.add(user);
+            }
+        });
+        return new JsonResult(users);
+    }
+
+    /**
+     *
+     */
+    @RequestMapping(value = "${vue-url.getUserById}",method = RequestMethod.POST)
+    public JsonResult getUserById(@RequestBody User user)throws Exception{
+        if(user == null){
+            return new JsonResult("信息为空！");
+        }
+        User temp = userService.getById(user.getId());
+        List<User> users = new ArrayList<>(0);
+        users.add(temp);
+        return new JsonResult(users);
+    }
+
+    /**
+     *
+     */
+    @RequestMapping(value = "${vue-url.updateUser}",method = RequestMethod.POST)
+    public JsonResult updateUser(@RequestBody User user)throws Exception{
+        if(user == null){
+            return new JsonResult("信息为空！");
+        }
+        userService.updateById(user);
+        return new JsonResult(true,null,null);
+    }
+
+    /**
+     * @throws Exception
+     */
+    @RequestMapping(value = "${vue-url.getAll}",method = RequestMethod.POST)
+    public JsonResult getAll()throws Exception{
+        List<Team> teamList = teamService.list(new QueryWrapper<Team>().orderByAsc("name"));
+        List<ResUser> resultList = new ArrayList<>(0);
+        teamList.forEach(obj ->{
+            List<ResUser> lists = userService.getUserByTeamId(obj.getId());
+            resultList.addAll(lists);
+        });
+        resultList.forEach(obj -> {
+            User temp0 = userService.getById(obj.getUser_id());
+            Team temp = teamService.getById(temp0.getTeamId());
+            obj.setTeamName(temp.getName());
+            if(obj.getAuthority() == 1){
+                obj.setAuthorityName("团队拥有者");
+            }else {
+                obj.setAuthorityName("团队成员");
+            }
+        });
+        return new JsonResult(resultList);
     }
 }

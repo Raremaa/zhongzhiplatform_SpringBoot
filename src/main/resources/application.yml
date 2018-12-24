@@ -38,14 +38,61 @@ vue-url:
   login: /userAction/login
   register: /userAction/register
   getUserInfo: /userAction/getUserInfo
-  #  我的团队(团队拥有者)
+  getUserById: /person/userAction/getUserById
+  updateUser: /person/userAction/updateUser
+  #团队拥有者
   registerMember: /teamLeader/userAction/registerMember
-  getByTeamId: /teamLeader/userAction/getByTeamId
+  # distinct
+#  getByTeamId: /teamLeader/userAction/getByTeamId
   deleteMembers: /userAction/deleteMembers
   updateMember: /userAction/updateMember
-  #  我的团队(团队成员)
-  #  我的项目(团队拥有者)
-  #  我的项目(团队成员)
+  save_error_logger: /teamLeader/save_error_logger
+  getTeamDate: /teamLeader/teamAction/getById
+#  updateTeamInf: /teamLeader/teamAction/update
+  dissmissTeamInf: /teamLeader/teamAction/dismiss
+#  getTask: /projectLeader/taskAction/getTask
+#  getUserByTask: /projectLeader/UserAction/getUserByTask
+#  getToken: /projectLeader/QiniuAction/getToken
+#  addTask: /projectLeader/TaskAction/addTask
+#  updateTask: /projectLeader/TaskAction/updateTask
+  getProject: /teamLeader_project/ProjectAction/getProject
+  getUserByTeamId: /teamLeader_project/UserAction/getUserByTeamId
+  addProject: /teamLeader_project/ProjectAction/addProject
+  deleteProject: /teamLeader_project/ProjectAction/deleteProject
+  updateProject: /teamLeader_project/ProjectAction/updateProject
+  addUserProject: /teamLeader_project/ProjectUserAction/addUserProject
+  getUserByTP: /teamLeader_project/UserAction/getUserByTP
+  getUserByProject: /teamLeader_project/UserAction/getUserByProject
+  deleteUserForProject: /teamLeader_project/UserAction/deleteUserForProject
+#  getTask: /teamLeader_project/taskAction/getTask
+  #项目负责人
+  getByTeamId: /project/userAction/getByTeamId
+  getTaskPlus: /projectLeader_project/TaskAction/getTaskPlus
+#  getToken: /projectLeader_project/QiniuAction/getToken
+  updateProjectPlus: /projectLeader_project/ProjectAction/updateProjectPlus
+  getUserByProjectPlus: /projectLeader_project/UserAction/getUserByProjectPlus
+  deleteTask: /projectLeader_project/TaskAction/deleteTask
+  addTask: /projectLeader_project/TaskAction/addTask
+  check: /projectLeader_project/CommitCheckAction/check
+#  getCheck: /projectLeader_project/CommitCheckAction/getCheck
+  getProjectDetail: /projectLeader_project/ProjectAction/getProjectDetail
+  updateProjectDetail: /projectLeader_project/ProjectAction/updateProjectDetail
+#  getNotice: /projectLeader_project/NoticeAction/getNotice
+  updateNotice: /projectLeader_project/NoticeAction/updateNotice
+  #团队成员
+  getTask: /teamMember_task/taskAction/getTask
+  getUserByTask: /teamMember_task/UserAction/getUserByTask
+  getToken: /teamMember_task/QiniuAction/getToken
+  updateTask: /teamMember_task/TaskAction/updateTask
+  getCheck: /teamMember_task/CommitCheckAction/getCheck
+  getTaskFinished: /teamMember_task/TaskAction/getTaskFinished
+  getNotice: /teamMember_task/NoticeAction/getNotice
+  updatePersonStatus: /teamMember_task/TaskAction/updatePersonStatus
+  #管理员
+  getTeam: /admin/TeamAction/getTeam
+  deleteTeam: /admin/TeamAction/deleteTeam
+  updateTeamInf: /admin/teamAction/update
+  getAll: /admin_user/UserAction/getAll
 
 ---
 #生产环境
@@ -69,6 +116,42 @@ vue-url:
   login: /userAction/login
   register: /userAction/register
   getUserInfo: /userAction/getUserInfo
+  getUserById: /userAction/getUserById
+  updateUser: /userAction/updateUser
   registerMember: /userAction/registerMember
   deleteMembers: /userAction/deleteMembers
   updateMember: /userAction/updateMember
+  save_error_logger: /save_error_logger
+  getTeamDate: /teamAction/getById
+  updateTeamInf: /teamAction/update
+  dissmissTeamInf: /teamAction/dismiss
+  getTask: /taskAction/getTask
+  getUserByTask: /UserAction/getUserByTask
+  getToken: /QiniuAction/getToken
+  addTask: /TaskAction/addTask
+  updateTask: /TaskAction/updateTask
+  getProject: /ProjectAction/getProject
+  getUserByTeamId: /UserAction/getUserByTeamId
+  addProject: /ProjectAction/addProject
+  deleteProject: /ProjectAction/deleteProject
+  updateProject: /ProjectAction/updateProject
+  addUserProject: /ProjectUserAction/addUserProject
+  getUserByTP: /UserAction/getUserByTP
+  getUserByProject: /UserAction/getUserByProject
+  deleteUserForProject: /UserAction/deleteUserForProject
+  getTaskPlus: /TaskAction/getTaskPlus
+  updateProjectPlus: /ProjectAction/updateProjectPlus
+  getUserByProjectPlus: /UserAction/getUserByProjectPlus
+  deleteTask: /TaskAction/deleteTask
+  check: /CommitCheckAction/check
+  getCheck: /CommitCheckAction/getCheck
+  getProjectDetail: /ProjectAction/getProjectDetail
+  updateProjectDetail: /ProjectAction/updateProjectDetail
+  getNotice: /NoticeAction/getNotice
+  updateNotice: /NoticeAction/updateNotice
+  getTaskFinished: /TaskAction/getTaskFinished
+  updatePersonStatus: /TaskAction/updatePersonStatus
+  getTeam: /TeamAction/getTeam
+  deleteTeam: /TeamAction/deleteTeam
+  getAll: /UserAction/getAll
+

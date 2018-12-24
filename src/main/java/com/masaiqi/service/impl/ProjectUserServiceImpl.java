@@ -2,10 +2,14 @@ package com.masaiqi.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.masaiqi.entity.ProjectUser;
+import com.masaiqi.entity.User;
 import com.masaiqi.mapper.ProjectUserMapper;
+import com.masaiqi.model.ReqModel.ReqUserProjejct;
 import com.masaiqi.service.IProjectUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,4 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProjectUserServiceImpl extends ServiceImpl<ProjectUserMapper, ProjectUser> implements IProjectUserService {
 
+    @Override
+    public List<User> getUserByTP(ReqUserProjejct reqUserProjejct) {
+        return baseMapper.getUserByTP(reqUserProjejct);
+    }
 }

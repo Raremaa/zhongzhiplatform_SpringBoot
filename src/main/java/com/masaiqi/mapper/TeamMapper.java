@@ -14,5 +14,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TeamMapper extends BaseMapper<Team> {
-
+    /**
+     * 解散团队
+     * @param id 团队id
+     * @return
+     */
+    Integer dismiss(Integer id);
 }

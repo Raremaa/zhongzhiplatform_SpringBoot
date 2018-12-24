@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.masaiqi.mapper.ProjectUserMapper">
-
+    <select id="getUserByTP" resultType="com.masaiqi.entity.User">
+        SELECT
+          *
+        FROM
+          `user` AS `user`
+        WHERE
+          `user`.teamId = #{teamId}
+        AND `user`.Id NOT IN ( SELECT project_user.userId FROM project_user AS project_user WHERE project_user.projectId = #{projectId} )
+    </select>
 </mapper>

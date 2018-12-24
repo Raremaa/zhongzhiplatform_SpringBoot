@@ -13,4 +13,5 @@ import com.masaiqi.entity.Team;
  */
 public interface ITeamService extends IService<Team> {
 
+    Integer dismiss(Integer id);
 }

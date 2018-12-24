@@ -3,12 +3,16 @@ package com.masaiqi.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * <p>
@@ -52,12 +56,18 @@ public class Project implements Serializable {
     /**
      * 规定完成时间
      */
-    private LocalDateTime deadtime;
+    private LocalDate deadtime;
+
+    @TableField(exist = false)
+    private String deadtimeFormat;
 
     /**
      * 开始时间
      */
-    private LocalDateTime starttime;
+    private LocalDate starttime;
+
+    @TableField(exist = false)
+    private String starttimeFormat;
 
     /**
      * 所属团队Id
@@ -71,5 +81,16 @@ public class Project implements Serializable {
     @TableField("accessoryId")
     private Integer accessoryId;
 
+    @TableField(exist = false)
+    private String projectLeaderName;
 
+    public String getDeadtimeFormat() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY年MM月dd日");
+        return this.deadtime.format(formatter);
+    }
+
+    public String getStarttimeFormat() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY年MM月dd日");
+        return this.starttime.format(formatter);
+    }
 }

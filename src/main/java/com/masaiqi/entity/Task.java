@@ -40,6 +40,11 @@ public class Task implements Serializable {
     private Integer projectId;
 
     /**
+     * 任务名
+     */
+    private String name;
+
+    /**
      * 任务的相关描述
      */
     private String msg;
@@ -57,9 +62,30 @@ public class Task implements Serializable {
     private Integer accessoryId;
 
     /**
+     * 用户提交的附件
+     */
+    @TableField("accessoryPersonId")
+    private Integer accessoryPersonId;
+
+    /**
+     * 个人完成情况: 0-默认 1-准备做 2-已经完成
+     */
+    @TableField("personStatus")
+    private Integer personStatus;
+    /**
      * 任务完成情况(由项目负责人裁定)：完成;未完成
      */
     private String status;
 
+    @TableField(exist = false)
+    private String time;
 
+    @TableField(exist = false)
+    private String checkTime;
+
+    @TableField(exist = false)
+    private String accessoryUrl;
+
+    @TableField(exist = false)
+    private String accessoryPersonUrl;
 }

@@ -2,6 +2,10 @@ package com.masaiqi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.masaiqi.entity.ProjectUser;
+import com.masaiqi.entity.User;
+import com.masaiqi.model.ReqModel.ReqUserProjejct;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,5 @@ import com.masaiqi.entity.ProjectUser;
  * @since 2018-10-22
  */
 public interface IProjectUserService extends IService<ProjectUser> {
-
+    List<User> getUserByTP(ReqUserProjejct reqUserProjejct);
 }

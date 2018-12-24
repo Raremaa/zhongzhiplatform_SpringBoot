@@ -10,9 +10,6 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * <p>
- * 团队表
- * </p>
  *
  * @author masaiqi
  * @since 2018-10-22
@@ -20,7 +17,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Team implements Serializable {
+public class Notice implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,29 +25,11 @@ public class Team implements Serializable {
     private Integer Id;
 
 
-    /**
-     * 团队名称
-     */
-    private String name;
+    @TableField("projectId")
+    private Integer projectId;
 
-    /**
-     * 团队头像url路径
-     */
-    @TableField("pictureUrl")
-    private String pictureUrl;
+    @TableField("info")
+    private String info;
 
-    /**
-     * 团队介绍
-     */
-    private String introduction;
-
-    /**
-     * 团队所有者
-     */
-    @TableField("Leader")
-    private Integer Leader;
-
-    @TableField(exist = false)
-    private String teamLeaderName;
 
 }

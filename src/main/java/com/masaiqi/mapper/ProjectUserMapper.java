@@ -2,7 +2,11 @@ package com.masaiqi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.masaiqi.entity.ProjectUser;
+import com.masaiqi.entity.User;
+import com.masaiqi.model.ReqModel.ReqUserProjejct;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +19,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectUserMapper extends BaseMapper<ProjectUser> {
 
+    List<User> getUserByTP(ReqUserProjejct reqUserProjejct);
 }

@@ -97,4 +97,6 @@ public class ResUser {
         });
         return sb.toString();
     }
+
+    private String teamName;
 }
