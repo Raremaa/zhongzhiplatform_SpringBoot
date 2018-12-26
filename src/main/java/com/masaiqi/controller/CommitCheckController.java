@@ -9,6 +9,7 @@ import com.masaiqi.json.JsonResult;
 import com.masaiqi.service.IAccessoryService;
 import com.masaiqi.service.ICommitCheckService;
 import com.masaiqi.service.ITaskService;
+import com.masaiqi.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,14 +49,23 @@ public class CommitCheckController {
         }
         commitCheck.setCheckTime(LocalDate.now());
         commitCheckService.updateById(commitCheck);
-        Task task = taskService.getById(commitCheck.getTaskId());
-        task.setUserStatus("未提交");
-        taskService.updateById(task);
         if(commitCheck.getAccessory() != null){
             Accessory accessory = commitCheck.getAccessory();
             accessoryService.save(accessory);
             commitCheck.setAccessoryId(accessory.getId());
             commitCheckService.updateById(commitCheck);
+        }
+        Task task = taskService.getById(commitCheck.getTaskId());
+        if(commitCheck.getTaskStatus() == "未完成"){
+            task.setUserStatus("未提交");
+            taskService.updateById(task);
+            WebSocketServer webSocketServer = new WebSocketServer();
+            webSocketServer.sendtoUser("您提交的任务审核未通过，请注意查看审核记录，任务数据已自动更新",task.getUserId().toString());
+        }else{
+            task.setStatus("完成");
+            taskService.updateById(task);
+            WebSocketServer webSocketServer = new WebSocketServer();
+            webSocketServer.sendtoUser("您提交的任务审核通过！请注意查看已完成任务，任务数据已自动更新",task.getUserId().toString());
         }
         return new JsonResult(true,null,null);
     }

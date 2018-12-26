@@ -93,7 +93,8 @@ public class WebSocketServer {
     public void sendtoUser(String message,String sendUserId) throws IOException {
         if (webSocketSet.get(sendUserId) != null) {
             if(!id.equals(sendUserId))
-                webSocketSet.get(sendUserId).sendMessage( "用户" + id + "发来消息：" + " <br/> " + message);
+                webSocketSet.get(sendUserId).sendMessage(message);
+//                webSocketSet.get(sendUserId).sendMessage( "用户" + id + "发来消息：" + " <br/> " + message);
             else
                 webSocketSet.get(sendUserId).sendMessage(message);
         } else {

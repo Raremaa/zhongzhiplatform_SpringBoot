@@ -88,6 +88,8 @@ public class TaskController {
             return new JsonResult("未传入信息");
         }
         taskService.addTask(reqTask);
+        WebSocketServer webSocketServer = new WebSocketServer();
+        webSocketServer.sendtoUser("您收到了新的任务分配，请注意查看，任务数据已更新",reqTask.getTask().getUserId().toString());
         return new JsonResult(true,null,null);
     }
 
@@ -210,7 +212,7 @@ public class TaskController {
         }
         List<Task> tasks = taskService.list(new QueryWrapper<Task>()
                 .eq("userId",user.getId())
-                .eq("status","已完成")
+                .eq("status","完成")
         );
         tasks.forEach(obj ->{
             List<CommitCheck> lists = commitCheckService.list(new QueryWrapper<CommitCheck>().eq("taskId",obj.getId()).orderByDesc("time"));

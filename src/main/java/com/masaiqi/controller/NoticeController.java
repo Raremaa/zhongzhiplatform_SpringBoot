@@ -4,14 +4,20 @@ package com.masaiqi.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.masaiqi.entity.Notice;
 import com.masaiqi.entity.Project;
+import com.masaiqi.entity.ProjectUser;
+import com.masaiqi.entity.User;
 import com.masaiqi.json.JsonResult;
 import com.masaiqi.service.INoticeService;
+import com.masaiqi.service.IProjectUserService;
+import com.masaiqi.service.IUserService;
+import com.masaiqi.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +34,12 @@ public class NoticeController {
 
     @Autowired
     INoticeService noticeService;
+
+    @Autowired
+    IUserService userService;
+
+    @Autowired
+    IProjectUserService projectUserService;
 
     /**
      *
@@ -58,6 +70,18 @@ public class NoticeController {
         }else {
             noticeService.updateById(notice);
         }
+        WebSocketServer webSocketServer = new WebSocketServer();
+        List<ProjectUser> lists = projectUserService.list(new QueryWrapper<ProjectUser>().eq("projectId",notice.getProjectId()));
+        lists.forEach(obj ->{
+            User temp = userService.getById(obj.getUserId());
+            if(temp.getAuthority() == 3){
+                try {
+                    webSocketServer.sendtoUser("项目组发布了新的公告："+notice.getInfo(),temp.getId().toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         return new JsonResult(true,null,null);
     }
 }
